@@ -1,0 +1,34 @@
+#!/bin/bash
+
+currentVersion=$( mysql -uroot -e "use mydatabase; select * from mytable ORDER BY Version DESC LIMIT 1" | cut -d '|' -f1|grep -v Version )
+if [ "$currentVersion" = "" ]; then
+   currentVersion = 0
+fi
+
+echo -n "Enter the directory that contains update scripts > "
+read location
+
+if [ "$location" = "" ]; then
+   echo "Wrong location. Exiting program."
+   exit 1
+fi
+
+echo "Updates location is $location"
+echo "It contains the following scripts:"
+
+cd $location
+for i in $( ls ); do
+    echo $i
+done
+
+
+for i in $( ls ); do
+    scriptVersion=$(echo $i| tr -cd [:digit:])
+    scriptVersion=$((10#$scriptVersion))
+    
+    if [ "$currentVersion" -lt "$scriptVersion" ]; then
+       bash $i
+    fi
+done
+
+
