@@ -1,6 +1,7 @@
 #!/bin/bash
 
 currentVersion=$( mysql -uroot -e "use mydatabase; select * from mytable ORDER BY Version DESC LIMIT 1" | cut -d '|' -f1|grep -v Version )
+
 if [ "$currentVersion" = "" ]; then
    currentVersion = 0
 fi
