@@ -1,6 +1,8 @@
 #!/bin/bash
 
 mysql -uroot -e "create database mydatabase"
+mysql -uroot -e "use mydatabase; create table mytable"
+mysql -uroot -e "use mydatabase; create table mytable (Version int)"
 
 echo -n "Enter the current version of DB table > "
 read tableVersion
