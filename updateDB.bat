@@ -2,9 +2,19 @@
 
 set /p currentVersion=<version.txt
 
+
 CD C:\TEMP\SCRIPTS
 ECHO %currentVersion%
 
 DIR
 
-FOR %%I IN (045 046 047 048 049 050 051 052) DO IF "currentVersion" LSS "%%I" Update.bat %%I
+::setlocal disableDelayedExpansion
+set "files="
+
+for %%F in (*) do ( call set files=%%files%% %%~nxF
+	set scriptName=%%~nxF
+	set scriptVersion=%scriptName:~0,3%
+    
+	IF /I "%scriptVersion%" GTR "%currentVersion%" xcopy /y %%~nxF version.txt	
+)
+
